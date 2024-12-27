@@ -32,14 +32,14 @@ wait <- function(x)
 # Creating List of Ids -
 #-----------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Major Categories") # setting the working directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Major Categories") # setting the working directory
 all_ids <- unique(fread("beefsack_ids.csv")[, all_ids]) # reading in list of all historic ids
 
 #----------------------------
 # Loading Data from BGG API -
 #----------------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Raw Data/XML New") # setting the working directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/BGG Data/XML New") # setting the working directory
 
 iterations = ceiling(length(all_ids)/20) - 1 # create a number of iterations based on groups of 500 ids
 i = 0 # setting the start value at 0 (since 0 * 500 + 1 = 1)
@@ -85,7 +85,7 @@ rm(bgg_data) # remove duplicate temp data
 # Combine all XML Data -
 #-----------------------
 
-file_list <- data.table(files = list.files("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Raw Data/XML New", pattern = ".xml")) # creating a list of all xml's in the directory
+file_list <- data.table(files = list.files("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/BGG Data/XML New", pattern = ".xml")) # creating a list of all xml's in the directory
 
 doc = newXMLDoc()
 root = newXMLNode("root", doc = doc)
@@ -98,4 +98,5 @@ for (n in 1:nrow(file_list)) {
   root <- addChildren(root, getNodeSet(temp, '/items/item'))
   n <- n + 1
 }
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/BGG Data/") # setting the working directory
 saveXML(root, "Compiled.xml") # save out the xml data

@@ -14,7 +14,7 @@
 # Creating List of Ids -
 #-----------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Over Time/Major Categories") # setting the working directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Over Time/Major Categories") # setting the working directory
 wow_data <- fread("WoW All Data.csv") # reading in Week over Week data 
 mom_data <- fread("MoM All Data.csv") # reading in Month over Month data
 wow_data <- wow_data[!(Type %in% c("Decrease in Users Rated", "Decrease in Users Rated Percent"))]
@@ -27,7 +27,7 @@ mom_wow_ids <- unique(mom_wow_ids) # reducing list to only unique values
 
 fwrite(data.table(mom_wow_ids), "mom_wow_ids.csv") # writing out list of all ids
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Major Categories") # setting the working directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Major Categories") # setting the working directory
 top_500_all <- fread("top_500_all_categories_reduced.csv") # write out the data
 top_500_ids <- unique(top_500_all[, ID])
 
@@ -38,8 +38,8 @@ all_ids <- unique(all_ids) # reducing list to only unique values
 # Reducing Historic Data -
 #-------------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks")
-file_list <- list.files("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks", pattern = ".csv")
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/")
+file_list <- list.files("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/", pattern = ".csv")
 
 historic_rank.dt <- data.table()
 
@@ -54,7 +54,7 @@ setnames(historic_rank.dt, c("ID", "Rank", "Rating", "Geek Score", "Users Rated"
 
 historic_reduced <- historic_rank.dt[ID %in% all_ids] #reducing historic data to only those that make it into the top 500 or WoW/MoM 25
 historic_reduced <- historic_reduced[wday(Date) == 1, c("ID", "Rank", "Rating", "Geek Score", "Users Rated", "Date")] # filtering data to only the first day of the week
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Final Data")
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Final Data")
 fwrite(historic_reduced, "Reduced Historic Data.csv") # writing out the data
 
 #--------------------------------

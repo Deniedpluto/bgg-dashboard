@@ -34,8 +34,8 @@ wait <- function(x)
 
 # historic_rank.dt <- historical_rank.dt
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks") # setting the working directory
-file_list <- list.files("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks", pattern = ".csv") # creating a list of all csv's in the directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks") # setting the working directory
+file_list <- list.files("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks", pattern = ".csv") # creating a list of all csv's in the directory
 
 historic_rank.dt <- data.table() # initializing a blank data table
 i = 1 # setting the start point to the first file in the list
@@ -58,7 +58,7 @@ beefsack_data <- data.table(read_csv(beefsack_api)) # Pulling in the beefsack da
 id_list <- unique(beefsack_data[, ID]) # Creating a list of all the ids
 rm(beefsack, beefsack_api, beefsack_date, beefsack_data) # removing beefsack url strings
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Major Categories") # setting the working directory
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Major Categories") # setting the working directory
 #historic_ids <- unique(historic_rank.dt[, ID]) # getting a list of all IDs every pulled
 historic_ids <- unique(fread("beefsack_ids.csv")[, all_ids]) # reading in list of all historic ids
 
@@ -87,7 +87,7 @@ if (length(new_ids) > 0) {
     pull_id_list <- new_ids[((i*20)+1):((i+1)*20)] # reducing the list to 20 (or less) ids
     pull_id_list <- pull_id_list[!sapply(pull_id_list, is.na)] # removing NAs from the list 
     active_ids <- paste0(pull_id_list, sep = ",", collapse = "") # converting the list to text
-    #    active_ids <- substr(active_ids, 1, nchar(active_ids)-1)
+    active_ids <- substr(active_ids, 1, nchar(active_ids)-1) # removing the trailing ,
     bgg_api <- paste0(bgg1, active_ids, bgg2) # setting 500 ids inside the bgg xmlapi2 call
     
     bgg_data <- read_xml(bgg_api) # reading in the xml data
@@ -100,21 +100,20 @@ if (length(new_ids) > 0) {
     temp <- cbind(data.table(full_ids), data.table(full_major_cat)) # combining the id with the category
     
     major_category_list <- rbind(major_category_list, temp) # combining new pulls with existing pulls
-    print()
+    print(paste("Pulled", i+1, "of", iterations + 1, "lists pulled."))
     wait(8) # wait 8 seconds
     i = i + 1  # increase i to next iteration
   }
   rm(temp) # remove duplicate temp data
   
+  major_category_list[, full_ids:=as.character(full_ids)] # convert ids from integers to characters
+  major_category_list[, full_major_cat:=gsub(' Rank', '', full_major_cat)] # removing the word Rank from category
+  major_category_list[, full_major_cat:=gsub(' Game', '', full_major_cat)] # removing the word Game from category
+  major_category_list <- major_category_list[full_major_cat!="Board"] # removing the "Board" category (i.e. overall rank)
+  major_category_list <- major_category_list[!(full_major_cat %in% c("RPG Item", "Accessory", "Video", "Amiga", "Commodore 64", "Arcade", "Atari ST"))] # removing unrelated categories
+  
+  setnames(major_category_list, c("ID", "Major Category")) # renaming columns
   } 
-
-major_category_list[, full_ids:=as.character(full_ids)] # convert ids from integers to characters
-major_category_list[, full_major_cat:=gsub(' Rank', '', full_major_cat)] # removing the word Rank from category
-major_category_list[, full_major_cat:=gsub(' Game', '', full_major_cat)] # removing the word Game from category
-major_category_list <- major_category_list[full_major_cat!="Board"] # removing the "Board" category (i.e. overall rank)
-major_category_list <- major_category_list[!(full_major_cat %in% c("RPG Item", "Accessory", "Video", "Amiga", "Commodore 64", "Arcade", "Atari ST"))] # removing unrelated categories
-
-setnames(major_category_list, c("ID", "Major Category")) # renaming columns
 
 old_major_category_list <- fread("major_category_list.csv") # reading in prior major category lists 
 

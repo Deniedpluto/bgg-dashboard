@@ -81,7 +81,7 @@ weekly_data.dt <- na.omit(weekly_data.dt)
 # Setting Up WoW/MoM Data -
 #--------------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Over Time")
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Over Time")
 
 n <- 25 # Number of Top Games Selected
 type <- c("Rank", "Rating", "Geek Score", "Users Rated", "Users Rated Percent")
@@ -167,11 +167,11 @@ fwrite(MoM_Data, "MoM Data.csv")
 # WoW By Category -
 #------------------
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Major Categories")
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Major Categories")
 major_category_list <- fread("major_category_list.csv") # reading in prior major category lists 
 major_categories <- unique(major_category_list[, `Major Category`]) # creating a list of major categories
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks/Over Time/Major Categories")
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks/Over Time/Major Categories")
 WoW_Data[, `Major Category` := "Overall"]
 WoW_Data <- WoW_Data[, c("Date", "ID", "Type", "Type Rank", "Major Category")] # create table of top 500 games for every day
 fwrite(WoW_Data, "WoW Data Overall.csv") # write out the data

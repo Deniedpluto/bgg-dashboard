@@ -30,7 +30,7 @@ max_date <- as.character(Sys.Date()) # Today's date
 min_date <- "2016-10-12" # first day of historical data from user/beefsack
 
 
-setwd("C:/Users/Peter.Matson/OneDrive - Calligo Limited/Onboarding/Board Game Geek Dashboard/Historical Ranks") # Directory in which everything is saved
+setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/Historical Ranks") # Directory in which everything is saved
 historical_rank.dt <- try(fread(paste0("historical_ranks_", current_year, ".csv")), silent = TRUE) # Reading in Current year data or returning error if the file is missing
 if('try-error' %in% class(historical_rank.dt)) {
   historical_rank.dt <- fread(paste0("historical_ranks_", last_year, ".csv")) # Returing last years data if the current year is missing
