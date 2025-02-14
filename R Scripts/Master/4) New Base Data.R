@@ -91,7 +91,7 @@ doc = newXMLDoc()
 root = newXMLNode("root", doc = doc)
 
 n <- 1
-
+tic()
 for (n in 1:nrow(file_list)) {
   temp <- xmlParse(paste0("XMLData_", n, ".xml"))
   # APPEND FROM API XML ROOT
@@ -100,3 +100,4 @@ for (n in 1:nrow(file_list)) {
 }
 setwd("C:/Users/Matso/source/repos/Deniedpluto/BGG-Data/BGG Data/") # setting the working directory
 saveXML(root, "Compiled.xml") # save out the xml data
+toc("Wrote XML file")

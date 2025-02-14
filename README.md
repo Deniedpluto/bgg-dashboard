@@ -1,1 +1,7 @@
 # bgg-dashboard
+
+I created this dashboard originally in PowerBI back in 2019 as part of an onboarding project at Decisive Data. The goal was to test the implementation of pulling data directly from an API into PowerBI. Since the original design it has been expanded multiple times and I have replaced the live connection to the BGG API with a static data source due to additional restrictions being added to the API itself. The current refresh process is manual, though it could be scheduled.
+
+In this repo you will find all the R Scripts, Grpahics, and the PowerBI template file. The data is not included in this repo, but can be pulled from the BGG API using the scripts provided. Additional troubleshooting may be required to run the scripts as they expect some files to be present in the working directory. Additioanlly, the script 4) New Base Data.R takes several hours to run as it must pull down game data from the BGG API 20 games at a time and as of my last refresh there were 1412 games. The API is also rate limited which increases the total time to run.
+
+You can see and interact with a working version of the dashboard in my evidence app linked here: https://deniedpluto.evidence.app/BGGDashboard/BGGDashboard/
